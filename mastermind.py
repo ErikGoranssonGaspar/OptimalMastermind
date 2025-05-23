@@ -1,10 +1,12 @@
 from typing import List
 
 class Combination:
-    def __init__(self, combo: list[int] | str | int) -> None:
+    def __init__(self, combo: list[int] | tuple[int] | str | int) -> None:
         try:
             if isinstance(combo, list) and all(isinstance(x, int) for x in combo):
                 self._combo = combo
+            elif isinstance(combo, tuple) and all(isinstance(int(x), int) for x in combo):
+                self._combo = list(combo) 
             elif isinstance(combo, str) and all(isinstance(int(x), int) for x in combo):
                 self._combo = [int(x) for x in combo]
             elif isinstance(combo, int):
@@ -73,7 +75,8 @@ def random_key(key_len, num_colors):
     return Key([randint(1, num_colors) for _ in range(key_len)])
     
 
-
+def possible_keys(history: list[tuple[Key, Response]]) -> list[Response]:
+    pass
 
 if __name__ == "__main__":
     secret_key = random_key(key_len=5, num_colors=8)
