@@ -27,6 +27,9 @@ class Combination:
     def __eq__(self, other) -> bool:
         return self._combo == other._combo
 
+    def __hash__(self):
+        return hash(tuple(self._combo))
+
     @property
     def string(self) -> str:
         return ''.join([str(c) for c in self._combo])
