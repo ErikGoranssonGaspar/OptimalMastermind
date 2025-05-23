@@ -18,8 +18,7 @@ class Combination:
         return len(self._combo)
 
     def __str__(self) -> str:
-        combo_string = ''.join(map(str, self._combo))
-        return f'Combination({combo_string})'
+        return f'Combination({self.string})'
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -40,8 +39,7 @@ class Key(Combination):
         return self._combo
 
     def __str__(self) -> str:
-        combo_string = ''.join(map(str, self._combo))
-        return f'Key({combo_string})'
+        return f'Key({self.string})'
 
 
 class Response(Combination):
@@ -50,9 +48,7 @@ class Response(Combination):
         return self._combo
 
     def __str__(self) -> str:
-        combo_string = ''.join(map(str, self._combo))
-        return f'Response({combo_string})'
-
+        return f'Response({self.string})'
 
 class GuessOutcome():
     def __init__(self, guess: Key, response: Response):
