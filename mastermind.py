@@ -88,9 +88,12 @@ def random_key(key_len, num_colors):
     return Key([randint(1, num_colors) for _ in range(key_len)])
     
 
-def possible_keys(history: list[GuessOutcome], num_colors=8) -> list[Key]:
+def possible_keys(history: list[GuessOutcome], num_colors: int = 8, warm_start: None | list[Key] = None) -> list[Key]:
     from itertools import product
-    possible_keys = [Key(key) for key in product(range(1, num_colors+1), repeat=5)]
+    if warm_start: 
+        possible_keys = warm_start
+    else:
+        possible_keys = [Key(key) for key in product(range(1, num_colors+1), repeat=5)]
     for guess_outcome in history:
         possible_keys = [key for key in possible_keys if guess_outcome.compatible_with(key)]
     return possible_keys
@@ -100,8 +103,10 @@ def entropy(history: list[GuessOutcome], guess: Key) -> float:
     from math import log2
     responses = all_responses()
     entropy = 0
+    keys_history = possible_keys(history)
     for response in responses:
-        p = prob(history, guess, response)
+        #p = prob(history, guess, response)
+        p = len(possible_keys([GuessOutcome(guess=guess, response=response)], warm_start=keys_history)) / len(keys_history)
         if p > 0:
             entropy += -p * log2(p)
     return entropy
@@ -120,16 +125,7 @@ def prob(history: list[GuessOutcome], guess: Key, response: Response) -> float:
 
 if __name__ == "__main__":
     history = []
-    keys = possible_keys(history)
-    print(history, len(keys))
-
     history.append(GuessOutcome(guess=Key(53267), response=Response(21)))
-    keys = possible_keys(history)
-    print(history, len(keys))
-
     history.append(GuessOutcome(guess=Key(53447), response=Response(1)))
-    keys = possible_keys(history)
-    print(history, len(keys))
 
-    keys = possible_keys([GuessOutcome(guess=Key(12345), response=Response(22222))])
-    print(history, len(keys))
+    print(entropy(history=history, guess=Key(12441)))
