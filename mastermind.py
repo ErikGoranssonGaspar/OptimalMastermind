@@ -51,6 +51,21 @@ class Response(Combination):
         return f'Response({combo_string})'
 
 
+class GuessOutcome():
+    def __init__(self, guess: Key, response: Response):
+        self.guess = guess
+        self.response = response
+
+    def __str__(self) -> str:
+        return f'GuessOutcome(guess:{self.guess.string}, response:{self.response.string})'
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+    def compatible_with(self, key: Key) -> bool:
+        return response(secret_key=key, guess=self.guess) == self.response
+
+
 def response(secret_key: Key, guess: Key) -> Response:
     assert len(secret_key) == len(guess), "The guess must be the same length as the secret key." 
 
@@ -73,8 +88,12 @@ def random_key(key_len, num_colors):
     return Key([randint(1, num_colors) for _ in range(key_len)])
     
 
-def possible_keys(history: list[tuple[Key, Response]]) -> list[Response]:
-    pass
+def possible_keys(history: list[GuessOutcome], num_colors=8) -> list[Key]:
+    from itertools import product
+    possible_keys = [Key(key) for key in product(range(1, num_colors+1), repeat=5)]
+    for guess_outcome in history:
+        possible_keys = [key for key in possible_keys if guess_outcome.compatible_with(key)]
+    return possible_keys
 
 if __name__ == "__main__":
     secret_key = random_key(key_len=5, num_colors=8)
