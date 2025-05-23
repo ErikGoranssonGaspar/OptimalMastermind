@@ -1,7 +1,7 @@
 from typing import List
 
 class Combination:
-    def __init__(self, combo: list[int] | tuple[int] | str | int) -> None:
+    def __init__(self, combo: list[int] | tuple[int, ...] | str | int) -> None:
         try:
             if isinstance(combo, list) and all(isinstance(x, int) for x in combo):
                 self._combo = combo
