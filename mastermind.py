@@ -70,15 +70,13 @@ def response(secret_key: Key, guess: Key) -> Response:
 
 def random_key(key_len, num_colors):
     from random import randint
-    return Key([randint(1, num_colors) for i in range(key_len)])
+    return Key([randint(1, num_colors) for _ in range(key_len)])
     
 
-if __name__ == "__main__":
-    key = random_key(key_len=5, num_colors=8)
-    print(key) 
-    print(len(key))
 
-    secret_key = Key([1, 2, 3, 4, 5])
-    guess = Key([1, 6, 2, 8, 5])
-    #print(response(secret_key=secret_key, guess=guess))
+
+if __name__ == "__main__":
+    secret_key = random_key(key_len=5, num_colors=8)
+    guess = random_key(key_len=5, num_colors=8)
+    print(response(secret_key=secret_key, guess=guess))
 
