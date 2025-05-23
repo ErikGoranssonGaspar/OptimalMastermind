@@ -1,5 +1,3 @@
-from typing import List
-
 class Combination:
     def __init__(self, combo: list[int] | tuple[int, ...] | str | int) -> None:
         try:
