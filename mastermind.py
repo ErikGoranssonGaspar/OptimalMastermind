@@ -66,8 +66,6 @@ class GuessOutcome():
 
 
 def response(secret_key: Key, guess: Key) -> Response:
-    assert len(secret_key) == len(guess), "The guess must be the same length as the secret key." 
-
     response = [2 if key_dig == guess_dig else 0 for key_dig, guess_dig in zip(secret_key.key, guess.key)]
 
     for i, (key_dig, guess_dig) in enumerate(zip(secret_key.key, guess.key)):
@@ -100,17 +98,21 @@ def possible_keys(history: list[GuessOutcome], num_colors: int = 8, warm_start: 
 
 def best_guess(history: list[GuessOutcome]) -> tuple[Key, dict[Key, float]]:
     viable_guesses = possible_keys(history)
-    guess_entropy = {guess: entropy(history, guess) for guess in viable_guesses}
+    guess_entropy = {guess: entropy(history, guess, keys_history=viable_guesses) for guess in viable_guesses}
     return max(guess_entropy, key=guess_entropy.get), guess_entropy
 
-def entropy(history: list[GuessOutcome], guess: Key) -> float:
-    print('Calculating entropy of ', guess)
+
+# Optimization:
+# v1 4.673 s ±  0.033 s
+# v2 202.9 ms ±   1.0 ms
+def entropy(history: list[GuessOutcome], guess: Key, keys_history: None | list[Key] = None) -> float:
     from math import log2
     responses = all_responses()
     entropy = 0
-    keys_history = possible_keys(history)
+    if not keys_history:
+        keys_history = possible_keys(history)
+
     for response in responses:
-        #p = prob(history, guess, response)
         p = len(possible_keys([GuessOutcome(guess=guess, response=response)], warm_start=keys_history)) / len(keys_history)
         if p > 0:
             entropy += -p * log2(p)
@@ -133,6 +135,5 @@ if __name__ == "__main__":
     history.append(GuessOutcome(guess=Key(53267), response=Response(21)))
     history.append(GuessOutcome(guess=Key(53447), response=Response(2221)))
 
-    print(entropy(history=history, guess=Key(12441)))
-    print(len(possible_keys(history)))
     guess, guess_entropy = best_guess(history)
+    print(guess)
