@@ -102,7 +102,13 @@ def possible_keys(history: list[GuessOutcome], num_colors: int = 8, warm_start: 
     return possible_keys
 
 
+def best_guess(history: list[GuessOutcome]) -> tuple[Key, dict[Key, float]]:
+    viable_guesses = possible_keys(history)
+    guess_entropy = {guess: entropy(history, guess) for guess in viable_guesses}
+    return max(guess_entropy, key=guess_entropy.get), guess_entropy
+
 def entropy(history: list[GuessOutcome], guess: Key) -> float:
+    print('Calculating entropy of ', guess)
     from math import log2
     responses = all_responses()
     entropy = 0
@@ -129,6 +135,8 @@ def prob(history: list[GuessOutcome], guess: Key, response: Response) -> float:
 if __name__ == "__main__":
     history = []
     history.append(GuessOutcome(guess=Key(53267), response=Response(21)))
-    history.append(GuessOutcome(guess=Key(53447), response=Response(1)))
+    history.append(GuessOutcome(guess=Key(53447), response=Response(2221)))
 
     print(entropy(history=history, guess=Key(12441)))
+    print(len(possible_keys(history)))
+    guess, guess_entropy = best_guess(history)
