@@ -95,6 +95,29 @@ def possible_keys(history: list[GuessOutcome], num_colors=8) -> list[Key]:
         possible_keys = [key for key in possible_keys if guess_outcome.compatible_with(key)]
     return possible_keys
 
+
+def entropy(history: list[GuessOutcome], guess: Key) -> float:
+    from math import log2
+    responses = all_responses()
+    entropy = 0
+    for response in responses:
+        p = prob(history, guess, response)
+        if p > 0:
+            entropy += -p * log2(p)
+    return entropy
+
+
+def all_responses() -> list[Response]:
+    def strip_zeros(lst: tuple) -> list:
+        return [l for l in lst if l != 0]
+    from itertools import combinations_with_replacement
+    return [Response(sorted(strip_zeros(r), reverse=True)) for r in combinations_with_replacement(range(3), 5)]
+
+
+def prob(history: list[GuessOutcome], guess: Key, response: Response) -> float:
+    return len(possible_keys(history + [GuessOutcome(guess=guess, response=response)])) / len(possible_keys(history))
+
+
 if __name__ == "__main__":
     history = []
     keys = possible_keys(history)
