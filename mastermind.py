@@ -96,7 +96,17 @@ def possible_keys(history: list[GuessOutcome], num_colors=8) -> list[Key]:
     return possible_keys
 
 if __name__ == "__main__":
-    secret_key = random_key(key_len=5, num_colors=8)
-    guess = random_key(key_len=5, num_colors=8)
-    print(response(secret_key=secret_key, guess=guess))
+    history = []
+    keys = possible_keys(history)
+    print(history, len(keys))
 
+    history.append(GuessOutcome(guess=Key(53267), response=Response(21)))
+    keys = possible_keys(history)
+    print(history, len(keys))
+
+    history.append(GuessOutcome(guess=Key(53447), response=Response(1)))
+    keys = possible_keys(history)
+    print(history, len(keys))
+
+    keys = possible_keys([GuessOutcome(guess=Key(12345), response=Response(22222))])
+    print(history, len(keys))
