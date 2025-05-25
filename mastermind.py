@@ -1,21 +1,29 @@
 class Combination:
-    def __init__(self, combo: list[int] | tuple[int, ...] | str | int) -> None:
+    def __init__(self, combo: list[int] | tuple[int, ...] | str | int):
         try:
-            if isinstance(combo, list) and all(isinstance(x, int) for x in combo):
-                self._combo = combo
-            elif isinstance(combo, tuple) and all(isinstance(int(x), int) for x in combo):
-                self._combo = list(combo) 
+            if isinstance(combo, tuple) and all(isinstance(int(x), int) for x in combo):
+                self._combo = combo 
+            elif isinstance(combo, list) and all(isinstance(x, int) for x in combo):
+                self._combo = tuple(combo)
             elif isinstance(combo, str) and all(isinstance(int(x), int) for x in combo):
-                self._combo = [int(x) for x in combo]
+                self._combo = tuple((int(x) for x in combo))
             elif isinstance(combo, int):
-                self._combo = [int(x) for x in str(combo)]
+                self._combo = tuple((int(x) for x in str(combo)))
             else:
-                raise TypeError("Combination must be either list[int], str[int], or int.")
+                raise TypeError("Combination must be either tuple[int], list[int], str[int], or int.")
         except ValueError:  
-            raise TypeError("Combination must be either list[int], str[int], or int.")
+            raise TypeError("Combination must be either tuple[int], list[int], str[int], or int.")
+            
+        self.string = ''.join([str(c) for c in self._combo])
 
     def __len__(self) -> int:
         return len(self._combo)
+
+    def __eq__(self, other) -> bool:
+        return self._combo == other._combo
+
+    def __hash__(self):
+        return hash(self._combo)
 
     def __str__(self) -> str:
         return f'Combination({self.string})'
@@ -23,15 +31,7 @@ class Combination:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def __eq__(self, other) -> bool:
-        return self._combo == other._combo
 
-    def __hash__(self):
-        return hash(tuple(self._combo))
-
-    @property
-    def string(self) -> str:
-        return ''.join([str(c) for c in self._combo])
 
 class Key(Combination):
     @property
@@ -49,6 +49,7 @@ class Response(Combination):
 
     def __str__(self) -> str:
         return f'Response({self.string})'
+
 
 class GuessOutcome():
     def __init__(self, guess: Key, response: Response):
@@ -96,15 +97,15 @@ def possible_keys(history: list[GuessOutcome], num_colors: int = 8, warm_start: 
     return possible_keys
 
 
+# Optimization:
+# v1 4.673 s ±  0.033 s
+# v2 202.9 ms ±   1.0 ms
 def best_guess(history: list[GuessOutcome]) -> tuple[Key, dict[Key, float]]:
     viable_guesses = possible_keys(history)
     guess_entropy = {guess: entropy(history, guess, keys_history=viable_guesses) for guess in viable_guesses}
     return max(guess_entropy, key=guess_entropy.get), guess_entropy
 
 
-# Optimization:
-# v1 4.673 s ±  0.033 s
-# v2 202.9 ms ±   1.0 ms
 def entropy(history: list[GuessOutcome], guess: Key, keys_history: None | list[Key] = None) -> float:
     from math import log2
     responses = all_responses()
@@ -133,7 +134,7 @@ def prob(history: list[GuessOutcome], guess: Key, response: Response) -> float:
 if __name__ == "__main__":
     history = []
     history.append(GuessOutcome(guess=Key(53267), response=Response(21)))
-    history.append(GuessOutcome(guess=Key(53447), response=Response(2221)))
+    #history.append(GuessOutcome(guess=Key(53447), response=Response(2221)))
 
     guess, guess_entropy = best_guess(history)
     print(guess)
