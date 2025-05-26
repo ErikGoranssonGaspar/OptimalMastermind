@@ -48,18 +48,3 @@ class Response(Combination):
 
     def __str__(self) -> str:
         return f'Response({self.string})'
-
-
-class GuessOutcome():
-    def __init__(self, guess: Key, response: Response):
-        self.guess = guess
-        self.response = response
-
-    def __str__(self) -> str:
-        return f'GuessOutcome(guess:{self.guess.string}, response:{self.response.string})'
-
-    def __repr__(self) -> str:
-        return self.__str__()
-
-    def compatible_with(self, key: Key) -> bool:
-        return response(secret_key=key, guess=self.guess) == self.response
