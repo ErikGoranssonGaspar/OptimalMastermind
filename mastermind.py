@@ -1,9 +1,10 @@
 from mastermind_classes import *
 import pickle
 
+
 with open('lookup.pkl', 'rb') as f:
     lookup = pickle.load(f)
-num_digits = 4
+key_len = 4
 num_colors = 6
 
 
@@ -36,14 +37,14 @@ def entropy(viable_guesses: set[Key]) -> dict[Key, float]:
 
 def all_keys() -> tuple[Key, ...]:
     from itertools import product
-    return tuple(Key(key) for key in product(range(1, num_colors+1), repeat=num_digits))
+    return tuple(Key(key) for key in product(range(1, num_colors+1), repeat=key_len))
 
 
 def all_responses() -> tuple[Response, ...]:
     def strip_zeros(lst: tuple) -> list:
         return [l for l in lst if l != 0]
     from itertools import combinations_with_replacement
-    return tuple(Response(sorted(strip_zeros(r), reverse=True)) for r in combinations_with_replacement(range(3), num_digits))
+    return tuple(Response(sorted(strip_zeros(r), reverse=True)) for r in combinations_with_replacement(range(3), key_len))
 
 
 def response(secret_key: Key, guess: Key) -> Response:
