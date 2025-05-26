@@ -10,7 +10,6 @@ num_colors = 6
 
 def best_guess(history: tuple[tuple[Key, Response], ...]) -> tuple[Key, dict[Key, float]]:
     viable_guesses = set.intersection(set(all_keys()), *[possible_keys(guess, response) for guess, response, in history])
-    print('Calculating entropy...')
     guess_entropy = entropy(viable_guesses)
     return max(guess_entropy, key=guess_entropy.get), guess_entropy
 
@@ -26,7 +25,7 @@ def entropy(viable_guesses: set[Key]) -> dict[Key, float]:
     responses = all_responses()
     guess_entropy = {}
     for i, guess in enumerate(viable_guesses):
-        print(f'{i}\r', end='', flush=True)
+        #print(f'{i}\r', end='', flush=True)
         entropy = 0
         for response in responses:
             p = len(possible_keys(guess, response).intersection(viable_guesses)) / total_len
