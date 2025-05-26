@@ -40,18 +40,17 @@ def all_responses() -> tuple[Response, ...]:
 
 
 def response(secret_key: Key, guess: Key) -> Response:
-    response = [2 if key_dig == guess_dig else 0 for key_dig, guess_dig in zip(secret_key.key, guess.key)]
+    full_matches = 0
+    freq_secret = [0]*9
+    freq_guess = [0]*9
+    for s, g in zip(secret_key.key, guess.key):
+        if s == g: full_matches += 1
+        else:
+            freq_secret[s] += 1
+            freq_guess[g] += 1
 
-    for i, (key_dig, guess_dig) in enumerate(zip(secret_key.key, guess.key)):
-        if key_dig == guess_dig:
-            continue
-
-        remaining_key = [k for i, k in enumerate(secret_key.key) if response[i] == 0]
-        if guess_dig in remaining_key:
-            response[i] = 1
-
-    response = sorted([r for r in response if r != 0], reverse=True)
-    return Response(response)
+    partial_matches = sum([min(freq_secret[d], freq_guess[d]) for d in range(1, 9)])
+    return Response((2,)*full_matches + (1,)*partial_matches)
 
 
 def random_key(key_len, num_colors):
