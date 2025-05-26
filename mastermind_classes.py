@@ -16,6 +16,10 @@ class Combination:
             
         self.string = ''.join([str(c) for c in self._combo])
 
+    @property 
+    def integer(self) -> int:
+        return int(self.string)
+
     def __len__(self) -> int:
         return len(self._combo)
 
