@@ -1,0 +1,40 @@
+.circle {
+  width: 40px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 4px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+.circle.red {
+  background-color: red;
+}
+
+.circle.blue {
+  background-color: blue;
+}
+
+.circle.green {
+  background-color: green;
+}
+
+.circle.yellow {
+  background-color: yellow;
+}
+
+.circle.orange {
+  background-color: orange;
+}
+
+.circle.purple {
+  background-color: purple;
+}
+
+.circle.white {
+  background-color: white;
+}
+
+.circle.black {
+  background-color: black;
+}

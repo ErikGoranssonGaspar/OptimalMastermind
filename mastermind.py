@@ -1,3 +1,4 @@
+from random import vonmisesvariate
 from mastermind_classes import *
 import pickle
 
@@ -10,13 +11,15 @@ num_colors = 6
 
 def best_guess(history: tuple[tuple[Key, Response], ...]) -> tuple[Key, dict[Key, float]]:
     viable_guesses = set.intersection(set(all_keys()), *[possible_keys(guess, response) for guess, response, in history])
+    if len(viable_guesses) == 1:
+        [only_guess] = viable_guesses
+        return only_guess, {only_guess: 0.0}
     guess_entropy = entropy(viable_guesses)
     return max(guess_entropy, key=guess_entropy.get), guess_entropy
 
 
 def possible_keys(guess: Key, resp: Response) -> set[Key]:
     return lookup[(guess, resp)]
-    #return set(key for key in all_keys() if response(secret_key=key, guess=guess) == resp)
 
 
 def entropy(viable_guesses: set[Key]) -> dict[Key, float]:
@@ -24,10 +27,13 @@ def entropy(viable_guesses: set[Key]) -> dict[Key, float]:
     total_len = len(viable_guesses)
     responses = all_responses()
     guess_entropy = {}
-    for i, guess in enumerate(viable_guesses):
-        #print(f'{i}\r', end='', flush=True)
+    # QQ: do we ever want to make a guess TWEIPOA
+    for guess in viable_guesses:
+    #for guess in all_keys():
         entropy = 0
         for response in responses:
+            #print(possible_keys(guess, response))
+            #print(len(possible_keys(guess, response).intersection(viable_guesses)))
             p = len(possible_keys(guess, response).intersection(viable_guesses)) / total_len
             if p > 0: entropy += -p * log2(p)
         guess_entropy[guess] = entropy

@@ -1,0 +1,86 @@
+<div class="mastermind">
+  <article>
+    <header>
+      MASTERMIND
+      <a href="#">&#63;&#8413;</a>
+    </header>
+    <div class="history">
+      {% for guess, response in history %}
+      <div class="history-entry">
+        <div class="guess">
+          {% for dig in guess.key %}
+          <div class="circle {{ colorcode[dig] }}"></div>
+          {% endfor %}
+        </div>
+        <div class="response">
+          {% for dig in response.response %}
+            {% if dig == 2 %}
+            <div class="circle black"></div>
+            {% endif %}
+            {% if dig == 1 %}
+            <div class="circle white"></div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %} 
+
+      {% set prev_response = history[-1][1].string %}
+      {% if prev_response == '2222'%}
+      <div style="text-align: center">
+        <h3 style="display: inline-block;">You win! 🎉</h3>
+        <button hx-get="/mastermind" hx-target="body">Play again?</button>
+      </div>
+      {% else %}
+      <div class="history-entry">
+        <div class="guess">
+          {% set prev_guess = history[-1][0].key %}
+          {% for dig in prev_guess %}
+          <div class="dropdown">
+            <div class="circle {{colorcode[dig]}} dropdown-toggle"></div>
+            <div class="dropdown-menu">
+              {% set colors = ['red', 'blue', 'yellow', 'green', 'orange', 'purple'] %}
+              {% for color in colors %}
+              <div class="circle {{color}}" _="
+                on click 
+                remove .red from the previous .dropdown-toggle 
+                then remove .blue from the previous .dropdown-toggle
+                then remove .yellow from the previous .dropdown-toggle
+                then remove .green from the previous .dropdown-toggle
+                then remove .orange from the previous .dropdown-toggle
+                then remove .purple from the previous .dropdown-toggle
+                then add .{{color}} to the previous .dropdown-toggle
+              "></div><br>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button hx-put="/guess" hx-vals="js:{...get_data()}" hx-target="closest .mastermind" hx-swap="outerHTML">GUESS</button>
+      </div>
+      {% endif %}
+    </div>
+  </article>
+  <section class="mastermind-bot">
+    <p>{{num_viable}} possible 
+      {% if num_viable != 1%}
+      moves
+      {% else %}
+      move
+      {% endif %}
+      ({{num_viable | log2 | round(2)}} bits)</p>
+    <h1>BEST GUESSES</h1>
+    {% set num_sugs = 6 %}
+    {% for guess, entropy in sug_guess[:num_sugs] %}
+    <div class="best-guess">
+      {% for dig in guess.key %}
+      <div class="circle {{colorcode[dig]}}"></div>
+      {% endfor %}
+      <p>{{entropy | round(2)}} bits</p>
+    </div>
+    {% endfor %}
+    {% if sug_guess | length > num_sugs %}
+    <div class="ellipsis">&vellip;</div>
+    {% endif %}
+  </section>
+</div>
