@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, render_template_string
+from flask import Flask, render_template, request, render_template_string, redirect, url_for
 from urllib.parse import parse_qs, parse_qsl
 from mastermind_classes import *
 from mastermind import *
@@ -7,9 +7,12 @@ import math
 
 app = Flask(__name__)
 app.jinja_env.add_extension(MarkdownExtension)
+@app.route("/")
+def index():
+    return redirect(url_for("mastermind"))
 
 @app.route("/mastermind", methods=["GET"])
-def index():    
+def mastermind():    
     secret_key = random_key(key_len=4, num_colors=6)
     _, sug_guess = best_guess(history=[])
     return render_template(
