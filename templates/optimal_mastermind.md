@@ -1,4 +1,0 @@
-# How to (have a computer) play optimal Mastermind
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vehicula euismod lacinia. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut tempor nisl velit, eget tempus nulla malesuada pharetra. Mauris cursus libero in dui imperdiet fermentum. Nullam pulvinar molestie lacus, vel iaculis risus facilisis ut. Nullam quis turpis ligula. Nam at egestas justo, eget rhoncus sapien. Duis ligula elit, vulputate ut mauris id, hendrerit rutrum orci. Praesent interdum arcu id augue congue, vitae auctor lacus posuere. Nulla pulvinar tempus turpis vitae luctus. Integer est neque, dignissim dapibus dolor at, rutrum congue lacus. Ut id semper nulla, sed porta ipsum. Nullam scelerisque, dui sed aliquet pulvinar, tellus justo commodo ipsum, sed scelerisque tellus nisi fermentum ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-

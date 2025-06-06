@@ -3,20 +3,27 @@ from urllib.parse import parse_qs, parse_qsl
 from mastermind_classes import *
 from mastermind import *
 from jinja_markdown2 import MarkdownExtension
+from jinja2 import ChoiceLoader, FileSystemLoader
 import math
 
 app = Flask(__name__)
 app.jinja_env.add_extension(MarkdownExtension)
+app.jinja_loader = ChoiceLoader([
+    app.jinja_loader,
+    FileSystemLoader(['static/docs'])
+])
 @app.route("/")
 def index():
     return redirect(url_for("mastermind"))
+
 
 @app.route("/mastermind", methods=["GET"])
 def mastermind():    
     secret_key = random_key(key_len=4, num_colors=6)
     _, sug_guess = best_guess(history=[])
     return render_template(
-        'base.html',
+        #'base.html',
+        'mastermind_start.html',
         secret_key=secret_key,
         sug_guess=sorted(sug_guess.items(), key=lambda x: x[1], reverse=True),
         colorcode=colorcode,
@@ -31,7 +38,7 @@ def guess():
     _, sug_guess = best_guess(history)
     viable_guesses = set.intersection(set(all_keys()), *[possible_keys(guess, response) for guess, response, in history])
     num_viable = len(viable_guesses)
-    return render_template('game.html',
+    return render_template('mastermind_play.html',
                            history=history,
                            colorcode=colorcode,
                            sug_guess=sorted(sug_guess.items(), key=lambda x: x[1], reverse=True),
@@ -82,3 +89,5 @@ def parse_response(data):
     guess, history = history[-1][0], history[:-1]
     return secret_key, guess, history
 
+if __name__ == '__main__':
+    app.run(debug=True, port=8001)

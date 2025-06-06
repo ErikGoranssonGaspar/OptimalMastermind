@@ -2,98 +2,28 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Optimal Mastermind</title>
-    <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.amber.min.css"
     >
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/general.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dropdown.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/circle.css') }}">
-    <script>
-      function get_data() {
-          const allowed = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'black', 'white'];
-
-          const colors = Array.from(document.querySelectorAll('.history .circle'))
-            .filter(el => !el.closest('.dropdown-menu'))
-            .map(el =>
-              allowed.find(color => el.classList.contains(color))
-            )
-            .filter(Boolean);
-
-          const secretKey = document.getElementById('secret_key')?.textContent.trim();
-          if (secretKey) {
-            colors.unshift(secretKey);  // add at start
-          }
-
-          return colors;
-        }
-    </script>
+    {% block head %}
+    <title>Erik Göransson Gaspar</title>
+    {% endblock %}
   </head>
   <body>
-    <span id="secret_key">{{secret_key.string}}</span>
+    <header>
+      <h2>Erik Göransson Gaspar</h2>
+      <a href='{{url_for('static', filename='docs/CV.pdf')}}' style="width=50px;">CV</a>
+      <a href='https://github.com/ErikGoranssonGaspar' style="width=90px;" target="_blank" rel="noopener noreferrer"><img src="{{url_for('static', filename='github-mark-white.svg')}}"></a>
+    </header>
     <main>
-      <div class="mastermind">
-        <article>
-          <header>
-            MASTERMIND
-            <a href="#">&#63;&#8413;</a>
-          </header>
-          I have chosen a secret code. Try to guess it!
-          <div class="history">
-            <div class="history-entry">
-              <div class="guess">
-                {% for start_color in ['red', 'blue', 'yellow', 'green'] %}
-                <div class="dropdown">
-                  <div class="circle {{start_color}} dropdown-toggle"></div>
-                  <div class="dropdown-menu">
-                    {% set colors = ['red', 'blue', 'yellow', 'green', 'orange', 'purple'] %}
-              {% for color in colors %}
-                    <div class="circle {{color}}" _="
-                on click 
-                remove .red from the previous .dropdown-toggle 
-                then remove .blue from the previous .dropdown-toggle
-                then remove .yellow from the previous .dropdown-toggle
-                then remove .green from the previous .dropdown-toggle
-                then remove .orange from the previous .dropdown-toggle
-                then remove .purple from the previous .dropdown-toggle
-                then add .{{color}} to the previous .dropdown-toggle
-              "></div><br>
-                    {% endfor %}
-                  </div>
-                </div>
-                {% endfor %}
-              </div>
-              <button hx-put="/guess" hx-vals="js:{...get_data()}" hx-target="closest .mastermind" hx-swap="outerHTML">GUESS</button>
-            </div>
-          </div>
-        </article>
-        <section class="mastermind-bot">
-          <p>{{sug_guess | length}} possible moves ({{sug_guess | length | log2 | round(2)}} bits)</p>
-          <h1>BEST GUESSES</h1>
-          {% set num_sugs = 6 %}
-          {% for guess, entropy in sug_guess[:num_sugs] %}
-          <div class="best-guess">
-            {% for dig in guess.key %}
-            <div class="circle {{colorcode[dig]}}"></div>
-            {% endfor %}
-            <p>{{entropy | round(2)}} bits</p>
-          </div>
-          {% endfor %}
-          {% if sug_guess | length > num_sugs %}
-          <div class="ellipsis">&vellip;</div>
-          {% endif %}
-        </section>
-      </div>
-      <div class="text">
-        <section>
-          {% markdown %}
-          {% include 'optimal_mastermind.md' %}
-          {% endmarkdown %}
-        </section>
-      </div>
+      {% block main %}
+      {% endblock %}
     </main>
   </body>
 </html>
