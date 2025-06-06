@@ -1,4 +1,1 @@
 __pycache__/
-*.md
-*.pdf
-!templates/optimal_mastermind.md

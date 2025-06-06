@@ -1,10 +1,11 @@
 header {
   background-color: rgb(233, 175, 1);
-  padding: 0.5em;
+  padding: 0.5em 1em;
   vertical-align: center;
   display: flex;
   flex-direction: row;
   align-items: center;
+
 }
 
 header h2 {
