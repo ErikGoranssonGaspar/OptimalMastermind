@@ -38,7 +38,11 @@
           {% for dig in prev_guess %}
           <div class="dropdown">
             <div class="circle {{colorcode[dig]}} dropdown-toggle"></div>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu invisible" _="
+              on click from previous .dropdown-toggle
+              add .invisible to .dropdown-menu
+              then remove .invisible from me
+            ">
               {% set colors = ['red', 'blue', 'yellow', 'green', 'orange', 'purple'] %}
               {% for color in colors %}
               <div class="circle {{color}}" _="

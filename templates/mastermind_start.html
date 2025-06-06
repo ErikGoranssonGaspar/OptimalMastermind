@@ -43,7 +43,11 @@
           {% for start_color in ['red', 'blue', 'yellow', 'green'] %}
           <div class="dropdown">
             <div class="circle {{start_color}} dropdown-toggle"></div>
-            <div class="dropdown-menu">
+            <div class="dropdown-menu invisible" _="
+              on click from previous .dropdown-toggle
+              add .invisible to .dropdown-menu
+              then remove .invisible from me
+            ">
               {% set colors = ['red', 'blue', 'yellow', 'green', 'orange', 'purple'] %}
             {% for color in colors %}
               <div class="circle {{color}}" _="
