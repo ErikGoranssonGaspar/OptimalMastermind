@@ -24,13 +24,12 @@ article header {
 }
 
 article header a {
-  color: rgba(96, 96, 96, 0.5);
-  position: relative;
-  right: 0;
+  /*color: rgba(96, 96, 96, 0.5);*/
+  color: rgb(255, 191, 0);
+  margin-left: 0;
   text-decoration: none;
   cursor: pointer;
-  font-size: 20px;
-  vertical-align: text-top;
+  font-size: 30px;
 }
 
 .history {
