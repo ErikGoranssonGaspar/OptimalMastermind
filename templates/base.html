@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}">
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.amber.min.css"
+      href="{{url_for('static', filename='lib/pico.amber.min.css')}}"
     >
     {% block head %}
     <title>Erik Göransson Gaspar</title>

@@ -2,8 +2,8 @@
 
 {% block head %}
 <title>Optimal Mastermind</title>
-<script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/hyperscript.org@0.9.14"></script>
+<script src="{{url_for('static', filename='lib/hyperscript.org@0.9.14')}}"></script>
+<script src="{{url_for('static', filename='lib/htmx.org@2.0.4')}}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/mastermind/general.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/mastermind/dropdown.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/mastermind/circle.css') }}">
