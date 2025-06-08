@@ -14,6 +14,12 @@
   min-width: 22em;
 }
 
+article header {
+  background-color: white;
+  border-style: none;
+  margin-bottom: 0;
+}
+
 .mastermind article header {
   text-align: center;
   background-color: white;
@@ -24,7 +30,7 @@
   align-items: baseline;
 }
 
-.mastermind article header span {
+article header span {
   font-size: 25px;
   font-weight: bold;
 }
