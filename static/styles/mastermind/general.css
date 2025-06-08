@@ -70,7 +70,8 @@ button {
   margin-left: 6px;
 }
 
-.response .circle {
+.response .circle,
+dialog .circle {
   width: 20px;
   margin: 6px;
 }

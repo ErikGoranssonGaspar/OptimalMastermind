@@ -29,12 +29,35 @@
 {% endblock %}
 
 {% block main %}
+<dialog>
+  <article>
+    <header>
+      <button aria-label="Close" rel="prev" _="on click remove @open from closest <dialog/>"></button>
+How to play Mastermind
+    </header>
+    <p>
+    The Code Master has chosen a secret code consisting of four pegs, each of which can be one of six colors. You win Mastermind by correctly guessing the code. After each wrong guess the Code Master will tell you how close you were with a series of black and white pegs.
+    </p>
+    <div style="
+      text-align: center;
+      margin: 1em 0;
+      vertical-align: middle;
+    ">
+      <div class="circle black"></div> 
+      <div class="circle black"></div> 
+      <div class="circle white"></div> 
+    </div>
+    <p>
+    You get a black peg for every part of your guess which had the right colored peg in the right place. Each white peg means that your contained a peg with the right color, but in the wrong place. If you get no pegs in response by the Code Master, then none of the colors you guessed are part of the secret code.
+          </p>
+  </article>
+</dialog>
 <span id="secret_key">{{secret_key.string}}</span>
 <div class="mastermind">
   <article>
     <header>
       MASTERMIND
-      <a href="#">&#63;&#8413;</a>
+      <a _="on click add @open to previous <dialog/>">&#63;&#8413;</a>
     </header>
     I have chosen a secret code. Try to guess it!
     <div class="history">
