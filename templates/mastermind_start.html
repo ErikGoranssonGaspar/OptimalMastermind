@@ -2,11 +2,14 @@
 
 {% block head %}
 <title>Optimal Mastermind</title>
-<script src="{{url_for('static', filename='lib/hyperscript.org@0.9.14')}}"></script>
-<script src="{{url_for('static', filename='lib/htmx.org@2.0.4')}}"></script>
+<script src="{{url_for('static', filename='lib/hyperscript.org@0.9.14')}}" async></script>
+<script src="{{url_for('static', filename='lib/htmx.org@2.0.4')}}" async></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/mastermind/general.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/mastermind/dropdown.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/mastermind/circle.css') }}">
+  <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
 <script>
   function get_data() {
           const allowed = ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'black', 'white'];
@@ -112,8 +115,8 @@
 <div class="text">
   <section>
     {% markdown %}
-{% include 'optimal_mastermind.md' %}
-        {% endmarkdown %}
+      {% include 'optimal_mastermind.md' %}
+    {% endmarkdown %}
   </section>
 </div>
 {% endblock %}
